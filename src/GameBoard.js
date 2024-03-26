@@ -23,11 +23,13 @@ export default class GameBoard {
   }
 
   place(row, col, shipName) {
+    const ship = this.getShip(shipName);
+
     if (row < 0 || row > 9 || col < 0 || col > 9) {
       return 'Coordinates are out of bound.';
+    } else if (row + ship.length > 9 || col + ship.length > 9) {
+      return 'Ship does not fit at that location.';
     }
-
-    const ship = this.getShip(shipName);
 
     for (let i = 0; i < ship.length; i++) {
       if (this.grid[row + i][col].hasShip) {
