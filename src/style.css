@@ -1,0 +1,40 @@
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0; 
+  font-size: inherit;
+  font-weight: normal;
+  list-style-type: none;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#grid-container {
+  width: 1000px;
+  height: 600px;
+  background-color: wheat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.grid {
+  height: 400px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 0.25rem;
+}
+
+.grid > div {
+  background-color: gray;
+
+}
