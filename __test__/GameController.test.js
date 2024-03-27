@@ -1,4 +1,4 @@
-import GameController from "../src/GameController.js";
+import GameController from "../src/modules/GameController.js";
 
 let game;
 beforeEach(() => {

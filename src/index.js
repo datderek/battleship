@@ -1,5 +1,5 @@
 import './style.css';
-import GameController from './GameController.js'
+import GameController from './modules/GameController.js'
 
 const grids = document.querySelectorAll('.grid');
 

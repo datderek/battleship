@@ -1,4 +1,4 @@
-import Bot from "../src/Bot.js";
+import Bot from "../src/modules/Bot.js";
 
 test('selectMove returns valid coordinates', async () => {
   const bot = new Bot();

@@ -1,4 +1,4 @@
-import Ship from '../src/Ship.js';
+import Ship from '../src/modules/Ship.js';
 
 test('constructor throws error if length is no provided', () => {
   expect(() => new Ship()).toThrow()
