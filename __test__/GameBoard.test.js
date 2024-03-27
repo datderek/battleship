@@ -19,6 +19,10 @@ test('place correctly updates board with horizonal ship', () => {
   expect(board.grid[3][6]).toEqual({hasShip: null, isShot: false});
 });
 
+test('place returns success message', () => {
+  expect(board.place(3, 4, 'patrol', 'horizontal')).toBe('success');
+})
+
 test('place returns message if ship does not fit', () => {
   expect(board.place(8, 8, 'battleship', 'horizontal')).toBe('Ship does not fit at that location.');
 });
@@ -35,6 +39,10 @@ test('place returns message if a ship is already present vertically', () => {
 test('receiveAttack updates the board', () => {
   board.receiveAttack(0, 0);
   expect(board.grid[0][0]).toEqual({hasShip: null, isShot: true});
+});
+
+test('receiveAttack returns success message', () => {
+  expect(board.receiveAttack(0, 0)).toBe('success');
 });
 
 test('receiveAttack returns message if coordinates are out of bounds', () => {
