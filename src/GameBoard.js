@@ -72,13 +72,8 @@ export default class GameBoard {
   }
 
   receiveAttack(row, col) {
-    if (row < 0 || row > 9 || col < 0 || col > 9) {
-      return 'Coordinates are out of bound.';
-    }
-
-    if (this.grid[row][col].isShot) {
-      return 'You have already shot this tile.';
-    }
+    if (!this.#isInBounds(row, col)) return 'Coordinates are out of bound.';
+    if (this.grid[row][col].isShot) return 'You have already shot this tile.';
 
     this.grid[row][col].isShot = true;
     if (this.grid[row][col].hasShip) this.grid[row][col].hasShip.hit();
