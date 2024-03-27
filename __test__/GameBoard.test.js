@@ -5,24 +5,31 @@ beforeEach(() => {
   board = new GameBoard();
 })
 
-test('place correctly updates board with ship', () => {
-  board.place(3, 4, 'patrol');
+test('place correctly updates board with vertical ship', () => {
+  board.place(3, 4, 'patrol', 'vertical');
   expect(board.grid[3][4]).toEqual({hasShip: board.fleet.patrol, isShot: false});
   expect(board.grid[4][4]).toEqual({hasShip: board.fleet.patrol, isShot: false});
   expect(board.grid[5][4]).toEqual({hasShip: null, isShot: false});
 });
 
+test('place correctly updates board with horizonal ship', () => {
+  board.place(3, 4, 'patrol', 'horizontal');
+  expect(board.grid[3][4]).toEqual({hasShip: board.fleet.patrol, isShot: false});
+  expect(board.grid[3][5]).toEqual({hasShip: board.fleet.patrol, isShot: false});
+  expect(board.grid[3][6]).toEqual({hasShip: null, isShot: false});
+});
+
 test('place returns message if ship does not fit', () => {
-  expect(board.place(8, 8, 'battleship')).toBe('Ship does not fit at that location.');
+  expect(board.place(8, 8, 'battleship', 'horizontal')).toBe('Ship does not fit at that location.');
 });
 
 test('place returns message if coordinates are out of range', () => {
-  expect(board.place(-1, 2, 'patrol')).toBe('Coordinates are out of bound.');
+  expect(board.place(-1, 2, 'patrol', 'vertical')).toBe('Coordinates are out of bound.');
 })
 
-test('place returns message if a ship is already present', () => {
-  board.place(1, 2, 'patrol');
-  expect(board.place(2, 2, 'battleship')).toBe('There is already a ship at that location.');
+test('place returns message if a ship is already present vertically', () => {
+  board.place(1, 2, 'patrol', 'vertical');
+  expect(board.place(2, 2, 'battleship', 'vertical')).toBe('There is already a ship at that location.');
 });
 
 test('receiveAttack updates the board', () => {
