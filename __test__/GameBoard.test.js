@@ -46,4 +46,18 @@ test('receiveAttack returns message if tile have already been shot', () => {
   expect(board.receiveAttack(0, 0)).toBe('You have already shot this tile.');
 });
 
+test('isAllSunk returns false if there are remaining ships', () => {
+  expect(board.isAllSunk()).toBe(false);
+});
+
+test('isAllSunk returns true if there are no remaining ships', () => {
+  const fleet = board.fleet;
+  Object.values(fleet).forEach((ship) => {
+    while (!ship.isSunk()) {
+      ship.hit();
+    }
+  });
+  expect(board.isAllSunk()).toBe(true);
+})
+
 

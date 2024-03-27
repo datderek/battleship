@@ -78,4 +78,8 @@ export default class GameBoard {
     this.grid[row][col].isShot = true;
     if (this.grid[row][col].hasShip) this.grid[row][col].hasShip.hit();
   }
+
+  isAllSunk() {
+    return Object.values(this.fleet).every((ship) => ship.isSunk());
+  }
 }
