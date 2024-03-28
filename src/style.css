@@ -34,7 +34,15 @@ body {
   gap: 0.25rem;
 }
 
-.grid > div {
-  background-color: gray;
+.tile {
+  border-radius: 0.25rem;
+  border: 1px solid black;
+}
 
+.miss {
+  background-color: lightgray;
+}
+
+.hit {
+  background-color: salmon;
 }
