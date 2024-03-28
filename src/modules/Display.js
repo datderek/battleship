@@ -2,6 +2,9 @@ export default class Display {
   static usersGrid = document.querySelector('#users-grid');
   static opponentsGrid = document.querySelector('#opponents-grid');
 
+  /**
+   * Renders two 10x10 grids for the game
+   */
   static renderGrid() {
     [this.usersGrid, this.opponentsGrid].forEach((grid) => {
       for (let i = 0; i < 10; i++) {
@@ -16,6 +19,10 @@ export default class Display {
     });
   }
 
+  /**
+   * Updates the visual state of the tile depending on whether the shot was a hit
+   * or a miss
+   */
   static updateTile(yourTileState, opponentTileState, row, col) {
     const myTile = this.usersGrid.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     if (yourTileState.isShot) {

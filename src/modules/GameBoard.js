@@ -17,7 +17,13 @@ export default class GameBoard {
       patrol: new Ship(2),
     };
   }
-
+  
+  /**
+   * Retrieves the ship
+   * 
+   * @param {string} shipName of the ship to retrieve
+   * @returns {Ship} the Ship reference
+   */
   getShip(shipName) {
     return this.fleet[shipName];
   }
@@ -55,6 +61,15 @@ export default class GameBoard {
     return true;
   }
 
+  /**
+   * Places the start of the ship at the provided tile (row, col).
+   * 
+   * @param {number} row of the tile to place the start of the ship
+   * @param {number} col of the tile to place the start of the ship
+   * @param {string} shipName of the ship to place
+   * @param {string} direction 'vertical' or 'horizontal'
+   * @returns {string} message indicating success or error
+   */
   place(row, col, shipName, direction) {
     const ship = this.getShip(shipName);
 
@@ -73,6 +88,13 @@ export default class GameBoard {
     return 'success';
   }
 
+  /**
+   * Receives the attack on the board
+   * 
+   * @param {number} row of the attacked tile
+   * @param {number} col of the attacked tile
+   * @returns {string} message indicating success or error
+   */
   receiveAttack(row, col) {
     if (!this.#isInBounds(row, col)) return 'Coordinates are out of bound.';
     if (this.grid[row][col].isShot) return 'You have already shot this tile.';
@@ -83,6 +105,11 @@ export default class GameBoard {
     return 'success';
   }
 
+  /**
+   * Checks if all ships on the board are sunk
+   * 
+   * @returns {boolean} true if all ships are sunk, else false
+   */
   isAllSunk() {
     return Object.values(this.fleet).every((ship) => ship.isSunk());
   }

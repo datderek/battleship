@@ -11,6 +11,9 @@ export default class GameController {
     this.winner = null;
   }
 
+  /**
+   * Starts the game
+   */
   start() {
     Display.renderGrid();
     this.#getNextMove();
@@ -43,6 +46,14 @@ export default class GameController {
     this.opponent = temp;
   }
 
+  /**
+   * Plays the turn with the provided move (row, col)
+   * 
+   * @param {number} row of selected tile
+   * @param {number} col of selected tile
+   * @returns {string|null} returns a string containing the error message if the 
+   *                        move was invalid, otherwise advances to the next turn
+   */
   playTurn(row, col) {
     if (!this.#isValidMove(row, col)) {
       this.#getNextMove();
