@@ -19,6 +19,16 @@ export default class Display {
     });
   }
 
+  static renderShips(board) {
+    for (let row = 0; row <= 9; row++) {
+      for (let col = 0; col <= 9; col++) {
+        if (board[row][col].hasShip) {
+          const tile = this.usersGrid.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+          tile.classList.add('ship');
+        }
+      }
+    }
+  }
   /**
    * Updates the visual state of the tile depending on whether the shot was a hit
    * or a miss

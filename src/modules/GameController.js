@@ -18,6 +18,7 @@ export default class GameController {
     this.playerOne.placeRandom();
     this.playerTwo.placeRandom();
     Display.renderGrid();
+    Display.renderShips(this.playerOne.board.grid);
     this.#getNextMove();
   }
 
