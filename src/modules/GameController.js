@@ -15,6 +15,8 @@ export default class GameController {
    * Starts the game
    */
   start() {
+    this.playerOne.placeRandom();
+    this.playerTwo.placeRandom();
     Display.renderGrid();
     this.#getNextMove();
   }

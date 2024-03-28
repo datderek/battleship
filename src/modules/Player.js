@@ -19,4 +19,19 @@ export default class Player {
     })
   }
 
+  /**
+   * Randomly places ships on the board
+   */
+  placeRandom() {
+    Object.keys(this.board.fleet).forEach((shipName) => {
+      let result;
+      do {
+        const row = Math.floor(Math.random() * 10);
+        const col = Math.floor(Math.random() * 10);
+        const direction = (Math.round(Math.random()) === 0 ? 'vertical' : 'horizontal');
+        result = this.board.place(row, col, shipName, direction);
+      } while (result !== 'success')
+    })
+  }
+
 }
