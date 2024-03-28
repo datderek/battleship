@@ -20,20 +20,20 @@ test('place correctly updates board with horizonal ship', () => {
 });
 
 test('place returns success message', () => {
-  expect(board.place(3, 4, 'patrol', 'horizontal')).toBe('success');
+  expect(board.place(3, 4, 'patrol', 'horizontal')).toEqual({ success: true, message: 'Ship placed.' });
 })
 
 test('place returns message if ship does not fit', () => {
-  expect(board.place(8, 8, 'battleship', 'horizontal')).toBe('Ship does not fit at that location.');
+  expect(board.place(8, 8, 'battleship', 'horizontal')).toEqual({ success: false, message: 'Ship does not fit at that location.' });
 });
 
 test('place returns message if coordinates are out of range', () => {
-  expect(board.place(-1, 2, 'patrol', 'vertical')).toBe('Coordinates are out of bound.');
+  expect(board.place(-1, 2, 'patrol', 'vertical')).toEqual({ success: false, message: 'Coordinates are out of bound.' });
 })
 
 test('place returns message if a ship is already present vertically', () => {
   board.place(1, 2, 'patrol', 'vertical');
-  expect(board.place(2, 2, 'battleship', 'vertical')).toBe('There is already a ship at that location.');
+  expect(board.place(2, 2, 'battleship', 'vertical')).toEqual({ success: false, message: 'There is already a ship at that location.' });
 });
 
 test('receiveAttack updates the board', () => {
@@ -41,17 +41,22 @@ test('receiveAttack updates the board', () => {
   expect(board.grid[0][0]).toEqual({hasShip: null, isShot: true});
 });
 
-test('receiveAttack returns success message', () => {
-  expect(board.receiveAttack(0, 0)).toBe('success');
+test('receiveAttack returns success response with miss', () => {
+  expect(board.receiveAttack(0, 0)).toEqual({ success: true, message: 'Miss!' });
 });
 
+test('receiveAttack return success response with hit', () => {
+  board.place(1, 1, 'patrol', 'horizontal')
+  expect(board.receiveAttack(1, 1)).toEqual({ success: true, message: 'Hit!' });
+})
+
 test('receiveAttack returns message if coordinates are out of bounds', () => {
-  expect(board.receiveAttack(0, 10)).toBe('Coordinates are out of bound.');
+  expect(board.receiveAttack(0, 10)).toEqual({ success: false, message: 'Coordinates are out of bound.' });
 });
 
 test('receiveAttack returns message if tile have already been shot', () => {
   board.receiveAttack(0, 0);
-  expect(board.receiveAttack(0, 0)).toBe('You have already shot this tile.');
+  expect(board.receiveAttack(0, 0)).toEqual({ success: false, message: 'You have already shot this tile.' });
 });
 
 test('isAllSunk returns false if there are remaining ships', () => {

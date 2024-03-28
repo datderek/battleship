@@ -82,21 +82,33 @@ export default class GameBoard {
    * @returns {string} message indicating success or error
    */
   place(row, col, shipName, direction) {
+    const response = {
+      success: false,
+      message: ''
+    }
+    
     const ship = this.getShip(shipName);
 
-    if (!this.#isInBounds(row, col)) return 'Coordinates are out of bound.';
-    if (!this.#isValidLocation(row, col, ship, direction)) return 'Ship does not fit at that location.';
-    if (!this.#isUnobstructed(row, col, ship, direction)) return 'There is already a ship at that location.';
-
-    for (let i = 0; i < ship.length; i++) {
-      if (direction === 'vertical') {
-        this.grid[row + i][col].hasShip = ship;
-      } else {
-        this.grid[row][col + i].hasShip = ship;
+    if (!this.#isInBounds(row, col)) {
+      response.message = 'Coordinates are out of bound.';
+    } else if (!this.#isValidLocation(row, col, ship, direction)) {
+      response.message = 'Ship does not fit at that location.';
+    } else if (!this.#isUnobstructed(row, col, ship, direction)) {
+      response.message = 'There is already a ship at that location.';
+    } else {
+      for (let i = 0; i < ship.length; i++) {
+        if (direction === 'vertical') {
+          this.grid[row + i][col].hasShip = ship;
+        } else {
+          this.grid[row][col + i].hasShip = ship;
+        }
       }
+
+      response.success = true;
+      response.message = "Ship placed."
     }
 
-    return 'success';
+    return response;
   }
 
   /**
@@ -107,13 +119,31 @@ export default class GameBoard {
    * @returns {string} message indicating success or error
    */
   receiveAttack(row, col) {
-    if (!this.#isInBounds(row, col)) return 'Coordinates are out of bound.';
-    if (this.grid[row][col].isShot) return 'You have already shot this tile.';
+    const response = {
+      success: false,
+      message: ''
+    }
 
-    this.grid[row][col].isShot = true;
-    if (this.grid[row][col].hasShip) this.grid[row][col].hasShip.hit();
+    const tile = this.grid[row][col];
 
-    return 'success';
+    if (!this.#isInBounds(row, col)) {
+      response.message = 'Coordinates are out of bound.';
+    } else if (tile.isShot) {
+      response.message = 'You have already shot this tile.';
+    } else {
+      tile.isShot = true;
+
+      if (tile.hasShip) {
+        tile.hasShip.hit();
+        response.success = true;
+        response.message = 'Hit!';
+      } else {
+        response.success = true;
+        response.message = 'Miss!';
+      }
+    }
+
+    return response;
   }
 
   /**
