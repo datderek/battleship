@@ -30,7 +30,7 @@ export default class Player {
         const col = Math.floor(Math.random() * 10);
         const direction = (Math.round(Math.random()) === 0 ? 'vertical' : 'horizontal');
         result = this.board.place(row, col, shipName, direction);
-      } while (result !== 'success')
+      } while (!result.success)
     })
   }
 

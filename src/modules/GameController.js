@@ -66,23 +66,30 @@ export default class GameController {
    */
   playTurn(row, col) {
     if (!this.#isValidMove(row, col)) {
+      Display.renderMessage('Invalid move. Please choose another tile.');
       this.#getNextMove();
-      return 'Invalid move. Please choose another tile.';
+      return;
     }
 
     const result = this.opponent.board.receiveAttack(row, col)
-    if (result !== 'success') {
-      this.#getNextMove();
-      return `${result} Please choose another tile.`;
+    
+    if (result.success) {
+      // TODO: PlayerVBot this updates your view of the enemies board on your turn
+      //       but updates your own board with their hit on their turn
+      // TODO: PlayerVPlayer this updates ONLY updates your own view of your enemies board, then switches to their display
+      Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
+      
+      if (result.message === 'Miss!') {
+        this.#switchPlayer();
+      } else { 
+        if (this.#isGameOver()) {
+          this.#endGame();
+        }
+      }
+    } else {
+      Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
-    Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
-    if (this.#isGameOver()) {
-      this.#endGame();
-      return;
-    };
-
-    this.#switchPlayer();
     this.#getNextMove();
   }
 }
