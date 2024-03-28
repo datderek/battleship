@@ -12,6 +12,7 @@ export default class GameController {
   }
 
   start() {
+    Display.renderGrid();
     this.#getNextMove();
   }
 
