@@ -45,14 +45,25 @@ export default class GameBoard {
     return true;
   }
 
+  #isShipNearby(row, col) {
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (!this.#isInBounds(row + i, col + j)) continue;
+        if (this.grid[row + i][col + j].hasShip) return true;
+      }
+    }
+
+    return false;
+  }
+
   #isUnobstructed(row, col, ship, direction) {
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'vertical') {
-        if (this.grid[row + i][col].hasShip) {
+        if (this.#isShipNearby(row + i, col)) {
           return false;
         }
       } else {
-        if (this.grid[row][col + i].hasShip) {
+        if (this.#isShipNearby(row, col + i)) {
           return false;
         }
       }
