@@ -1,5 +1,6 @@
 import Player from './Player.js'
 import Bot from './Bot.js';
+import Display from './Display.js';
 
 export default class GameController {
   constructor() {
@@ -42,16 +43,21 @@ export default class GameController {
   }
 
   playTurn(row, col) {
-    if (!this.#isValidMove(row, col)) return 'Invalid move. Please choose another tile.';
+    if (!this.#isValidMove(row, col)) {
+      this.#getNextMove();
+      return 'Invalid move. Please choose another tile.';
+    }
 
     const result = this.opponent.board.receiveAttack(row, col)
     if (result !== 'success') {
+      this.#getNextMove();
       return `${result} Please choose another tile.`;
     }
-    
+
+    Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
     if (this.#isGameOver()) this.#setWinner();
 
     this.#switchPlayer();
-    //this.#getNextMove();
+    this.#getNextMove();
   }
 }
