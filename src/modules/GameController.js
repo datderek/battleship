@@ -9,6 +9,7 @@ export default class GameController {
     this.currentPlayer = this.playerOne;
     this.opponent = this.playerTwo;
     this.winner = null;
+    this.gameState = null;
   }
 
   /**
@@ -17,6 +18,7 @@ export default class GameController {
   start() {
     this.playerOne.placeRandom();
     this.playerTwo.placeRandom();
+    this.gameState = 'active';
     Display.renderGrid();
     Display.renderShips(this.playerOne.board.grid);
     this.#getNextMove();
@@ -41,6 +43,11 @@ export default class GameController {
 
   #setWinner() {
     this.winner = this.currentPlayer;
+  }
+
+  #endGame() {
+    this.#setWinner();
+    Display.renderMessage(`Game over. ${this.winner.name} has prevailed!`);
   }
 
   #switchPlayer() {
@@ -70,7 +77,10 @@ export default class GameController {
     }
 
     Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
-    if (this.#isGameOver()) this.#setWinner();
+    if (this.#isGameOver()) {
+      this.#endGame();
+      return;
+    };
 
     this.#switchPlayer();
     this.#getNextMove();

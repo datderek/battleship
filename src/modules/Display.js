@@ -1,6 +1,7 @@
 export default class Display {
   static usersGrid = document.querySelector('#users-grid');
   static opponentsGrid = document.querySelector('#opponents-grid');
+  static roundMessage = document.querySelector('#round-message');
 
   /**
    * Renders two 10x10 grids for the game
@@ -28,6 +29,10 @@ export default class Display {
         }
       }
     }
+  }
+
+  static renderMessage(msg) {
+    this.roundMessage.textContent = msg;
   }
   /**
    * Updates the visual state of the tile depending on whether the shot was a hit
