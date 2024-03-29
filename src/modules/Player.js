@@ -7,16 +7,45 @@ export default class Player {
   }
   
   /**
-   * Selects a tile to attack
+   * Selects a tile
    * 
    * @returns a Promise that resolves to the selected tile
    */
-  selectMove() {
+  selectTileTo(action) {
+    const grid = (action === 'place' ? 'users-grid' : 'opponents-grid');
     return new Promise((resolve) => {
-      document.getElementById('opponents-grid').addEventListener('click', (e) => {
-        resolve([Number(e.target.dataset.row), Number(e.target.dataset.col)]);
-      }, { once: true })
+      const response = {
+        row: null,
+        col: null,
+      }
+
+      if (action === 'place') {
+        response.direction = 'horizontal';
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'r' || e.key === 'R') {
+            response.direction = (response.direction === 'horizontal' ? 'vertical' : 'horizontal');
+          }
+        })
+      }
+
+      document.getElementById(grid).addEventListener('click', (e) => {
+        response.row = Number(e.target.dataset.row);
+        response.col = Number(e.target.dataset.col);
+        resolve(response);
+      }, { once: true });
     })
+  }
+
+  async placeFleet() {
+    for (const shipName of Object.keys(this.board.fleet)) {
+      let result;
+      do {
+        const response = await this.selectTileTo('place');
+        const { row, col, direction } = response;
+        console.log(row, col, direction);
+        result = this.board.place(row, col, shipName, direction);
+      } while (!result.success)
+    }
   }
 
   /**

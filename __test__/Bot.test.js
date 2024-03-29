@@ -1,8 +1,19 @@
 import Bot from "../src/modules/Bot.js";
 
+let bot;
+beforeEach(() => {
+  bot = new Bot();
+})
+
 test('selectMove returns valid coordinates', async () => {
-  const bot = new Bot();
-  const coordinates = await bot.selectMove();
-  expect(coordinates[0]).toBeGreaterThanOrEqual(0);
-  expect(coordinates[0]).toBeLessThanOrEqual(9)
+  const response = await bot.selectTileTo('attack');
+  expect(response.row).toBeGreaterThanOrEqual(0);
+  expect(response.row).toBeLessThanOrEqual(9);
+})
+
+test('selectMove returns valid direction', async () => {
+  const response = await bot.selectTileTo('place');
+  expect(response.row).toBeGreaterThanOrEqual(0);
+  expect(response.row).toBeLessThanOrEqual(9);
+  expect(response.direction).toMatch(/horizontal|vertical/);
 })

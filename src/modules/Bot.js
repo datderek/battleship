@@ -11,14 +11,30 @@ export default class Bot extends Player {
     return [x, y]
   }
 
+  #generateRandomDirection() {
+    return (Math.round(Math.random()) === 0 ? 'horizontal' : 'vertical');
+  }
+
   /**
-   * Selects a tile to attack
+   * Selects a tile
    * 
    * @returns a Promise that resolves to the selected tile
    */
-  selectMove() {
+  selectTileTo(action) {
     return new Promise((resolve) => {
-      resolve(this.#generateRandomCoordinates());
+      const response = {
+        row: null,
+        col: null,
+      }
+
+      if (action === 'place') {
+        response.direction = this.#generateRandomDirection();
+      }
+
+      const [row, col] = this.#generateRandomCoordinates();
+      response.row = row;
+      response.col = col;
+      resolve(response);
     })
   }
 }

@@ -27,10 +27,6 @@ test('place returns message if ship does not fit', () => {
   expect(board.place(8, 8, 'battleship', 'horizontal')).toEqual({ success: false, message: 'Ship does not fit at that location.' });
 });
 
-test('place returns message if coordinates are out of range', () => {
-  expect(board.place(-1, 2, 'patrol', 'vertical')).toEqual({ success: false, message: 'Coordinates are out of bound.' });
-})
-
 test('place returns message if a ship is already present vertically', () => {
   board.place(1, 2, 'patrol', 'vertical');
   expect(board.place(2, 2, 'battleship', 'vertical')).toEqual({ success: false, message: 'There is already a ship at that location.' });

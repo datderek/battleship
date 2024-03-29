@@ -28,8 +28,8 @@ export default class GameBoard {
     return this.fleet[shipName];
   }
 
-  #isInBounds(row, col) {
-    if (row < 0 || row > 9 || col < 0 || col > 9) {
+  #isValidTile(row, col) {
+    if (isNaN(row) || isNaN(col) || row < 0 || row > 9 || col < 0 || col > 9) {
       return false;
     }
     
@@ -48,7 +48,7 @@ export default class GameBoard {
   #isShipNearby(row, col) {
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
-        if (!this.#isInBounds(row + i, col + j)) continue;
+        if (!this.#isValidTile(row + i, col + j)) continue;
         if (this.grid[row + i][col + j].hasShip) return true;
       }
     }
@@ -89,9 +89,7 @@ export default class GameBoard {
     
     const ship = this.getShip(shipName);
 
-    if (!this.#isInBounds(row, col)) {
-      response.message = 'Coordinates are out of bound.';
-    } else if (!this.#isValidLocation(row, col, ship, direction)) {
+    if (!this.#isValidLocation(row, col, ship, direction)) {
       response.message = 'Ship does not fit at that location.';
     } else if (!this.#isUnobstructed(row, col, ship, direction)) {
       response.message = 'There is already a ship at that location.';
@@ -126,7 +124,7 @@ export default class GameBoard {
 
     const tile = this.grid[row][col];
 
-    if (!this.#isInBounds(row, col)) {
+    if (!this.#isValidTile(row, col)) {
       response.message = 'Coordinates are out of bound.';
     } else if (tile.isShot) {
       response.message = 'You have already shot this tile.';

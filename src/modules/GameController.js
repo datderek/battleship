@@ -15,18 +15,18 @@ export default class GameController {
   /**
    * Starts the game
    */
-  start() {
-    this.playerOne.placeRandom();
-    this.playerTwo.placeRandom();
+  async start() {
     this.gameState = 'active';
     Display.renderGrid();
+    await this.playerOne.placeFleet();
+    this.playerTwo.placeRandom();
     Display.renderShips(this.playerOne.board.grid);
     this.#getNextMove();
   }
 
   #getNextMove() {
-    this.currentPlayer.selectMove()
-      .then((move) => this.playTurn(move[0], move[1]));
+    this.currentPlayer.selectTileTo('attack')
+      .then((response) => this.playTurn(response.row, response.col));
   }
 
   #isValidMove(row, col) {
@@ -72,13 +72,11 @@ export default class GameController {
     }
 
     const result = this.opponent.board.receiveAttack(row, col)
-    
     if (result.success) {
       // TODO: PlayerVBot this updates your view of the enemies board on your turn
       //       but updates your own board with their hit on their turn
       // TODO: PlayerVPlayer this updates ONLY updates your own view of your enemies board, then switches to their display
       Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
-      
       if (result.message === 'Miss!') {
         this.#switchPlayer();
       } else { 
