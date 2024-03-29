@@ -71,7 +71,8 @@ export default class GameController {
       return;
     }
 
-    const result = this.opponent.board.receiveAttack(row, col)
+    const result = this.opponent.board.receiveAttack(row, col);
+    
     if (result.success) {
       // TODO: PlayerVBot this updates your view of the enemies board on your turn
       //       but updates your own board with their hit on their turn
@@ -82,6 +83,7 @@ export default class GameController {
       } else { 
         if (this.#isGameOver()) {
           this.#endGame();
+          return;
         }
       }
     } else {
