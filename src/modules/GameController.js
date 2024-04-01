@@ -1,6 +1,7 @@
 import Player from './Player.js'
 import Bot from './Bot.js';
 import Display from './Display.js';
+import Utils from './Utils.js';
 
 export default class GameController {
   constructor() {
@@ -19,22 +20,16 @@ export default class GameController {
     this.gameState = 'active';
     Display.renderGrid();
     await this.playerOne.placeFleet();
-    this.playerTwo.placeRandom();
+    // TODO: This should render after every time a user has placed a ship.
+    // TODO: Highlight cells based on length of ship to indicate potential placement
     Display.renderShips(this.playerOne.board.grid);
+    this.playerTwo.placeRandom();
     this.#getNextMove();
   }
 
   #getNextMove() {
     this.currentPlayer.selectTileTo('attack')
       .then((response) => this.playTurn(response.row, response.col));
-  }
-
-  #isValidMove(row, col) {
-    if (isNaN(row) || isNaN(col) || row < 0 || row > 9 || col < 0 || col > 9) {
-      return false;
-    }
-    
-    return true;
   }
 
   #isGameOver() {
@@ -65,14 +60,14 @@ export default class GameController {
    *                        move was invalid, otherwise advances to the next turn
    */
   playTurn(row, col) {
-    if (!this.#isValidMove(row, col)) {
+    if (!Utils.isValidTile(row, col)) {
       Display.renderMessage('Invalid move. Please choose another tile.');
       this.#getNextMove();
       return;
     }
 
     const result = this.opponent.board.receiveAttack(row, col);
-    
+
     if (result.success) {
       // TODO: PlayerVBot this updates your view of the enemies board on your turn
       //       but updates your own board with their hit on their turn

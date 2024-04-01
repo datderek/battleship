@@ -1,4 +1,5 @@
 import Ship from "./Ship.js";
+import Utils from "./Utils.js";
 
 export default class GameBoard {
   constructor() {
@@ -28,27 +29,10 @@ export default class GameBoard {
     return this.fleet[shipName];
   }
 
-  #isValidTile(row, col) {
-    if (isNaN(row) || isNaN(col) || row < 0 || row > 9 || col < 0 || col > 9) {
-      return false;
-    }
-    
-    return true;
-  }
-
-  #isValidLocation(row, col, ship, direction) {
-    if (direction === 'vertical' && row + ship.length - 1 > 9
-        || direction === 'horizontal' && col + ship.length - 1 > 9) {
-      return false;              
-    }
-
-    return true;
-  }
-
   #isShipNearby(row, col) {
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
-        if (!this.#isValidTile(row + i, col + j)) continue;
+        if (!Utils.isValidTile(row + i, col + j)) continue;
         if (this.grid[row + i][col + j].hasShip) return true;
       }
     }
@@ -93,7 +77,7 @@ export default class GameBoard {
     
     const ship = this.getShip(shipName);
 
-    if (!this.#isValidLocation(row, col, ship, direction)) {
+    if (!Utils.isValidLocation(row, col, ship, direction)) {
       response.message = 'Ship does not fit at that location.';
     } else if (!this.#isUnobstructed(row, col, ship, direction)) {
       response.message = 'There is already a ship at that location.';
@@ -128,7 +112,7 @@ export default class GameBoard {
 
     const tile = this.grid[row][col];
 
-    if (!this.#isValidTile(row, col)) {
+    if (!Utils.isValidTile(row, col)) {
       response.message = 'Coordinates are out of bound.';
     } else if (tile.isShot) {
       response.message = 'You have already shot this tile.';
