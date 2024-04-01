@@ -1,4 +1,5 @@
 import GameBoard from "./GameBoard.js";
+import Display from "./Display.js";
 
 export default class Player {
   constructor(name) {
@@ -42,9 +43,9 @@ export default class Player {
       do {
         const response = await this.selectTileTo('place');
         const { row, col, direction } = response;
-        console.log(row, col, direction);
         result = this.board.place(row, col, shipName, direction);
       } while (!result.success)
+      Display.renderMessage(result.message);
     }
   }
 

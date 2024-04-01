@@ -20,7 +20,7 @@ test('place correctly updates board with horizonal ship', () => {
 });
 
 test('place returns success message', () => {
-  expect(board.place(3, 4, 'patrol', 'horizontal')).toEqual({ success: true, message: 'Ship placed.' });
+  expect(board.place(3, 4, 'patrol', 'horizontal')).toEqual({ success: true, message: 'Placed patrol at D5.' });
 })
 
 test('place returns message if ship does not fit', () => {

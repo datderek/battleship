@@ -72,6 +72,10 @@ export default class GameBoard {
     return true;
   }
 
+  #formatCoordinates(row, col) {
+    return `${String.fromCharCode(row + 65)}${col + 1}`;
+  }
+
   /**
    * Places the start of the ship at the provided tile (row, col).
    * 
@@ -103,7 +107,7 @@ export default class GameBoard {
       }
 
       response.success = true;
-      response.message = "Ship placed."
+      response.message = `Placed ${shipName.charAt(0).toUpperCase() + shipName.slice(1)} at ${this.#formatCoordinates(row, col)}.`;
     }
 
     return response;
