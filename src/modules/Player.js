@@ -24,7 +24,7 @@ export default class Player {
       }
       
       if (action === 'place') {
-        response.direction = 'horizontal';
+        response.direction = Display.currentDirection;
         document.addEventListener('keydown', (e) => {
           if (e.key === 'r' || e.key === 'R') {
             response.direction = (response.direction === 'horizontal' ? 'vertical' : 'horizontal');
