@@ -19,11 +19,9 @@ export default class GameController {
   async start() {
     this.gameState = 'active';
     Display.renderGrid();
+    await this.playerTwo.placeFleet();
+    Display.hideShips();
     await this.playerOne.placeFleet();
-    // TODO: This should render after every time a user has placed a ship.
-    // TODO: Highlight cells based on length of ship to indicate potential placement
-    Display.renderShips(this.playerOne.board.grid);
-    this.playerTwo.placeRandom();
     this.#getNextMove();
   }
 
@@ -51,6 +49,10 @@ export default class GameController {
     this.opponent = temp;
   }
 
+  #delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   /**
    * Plays the turn with the provided move (row, col)
    * 
@@ -59,7 +61,7 @@ export default class GameController {
    * @returns {string|null} returns a string containing the error message if the 
    *                        move was invalid, otherwise advances to the next turn
    */
-  playTurn(row, col) {
+  async playTurn(row, col) {
     if (!Utils.isValidTile(row, col)) {
       Display.renderMessage('Invalid move. Please choose another tile.');
       this.#getNextMove();
@@ -69,9 +71,6 @@ export default class GameController {
     const result = this.opponent.board.receiveAttack(row, col);
 
     if (result.success) {
-      // TODO: PlayerVBot this updates your view of the enemies board on your turn
-      //       but updates your own board with their hit on their turn
-      // TODO: PlayerVPlayer this updates ONLY updates your own view of your enemies board, then switches to their display
       Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
       if (result.message === 'Miss!') {
         this.#switchPlayer();
@@ -85,6 +84,7 @@ export default class GameController {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
+    await this.#delay(1000);
     this.#getNextMove();
   }
 }

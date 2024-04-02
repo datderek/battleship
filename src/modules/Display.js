@@ -35,6 +35,11 @@ export default class Display {
     }
   }
 
+  static hideShips() {
+    const tiles = this.usersGrid.querySelectorAll('.ship');
+    tiles.forEach(tile => tile.classList.remove('ship'));
+  }
+
   static renderMessage(msg) {
     this.roundMessage.textContent = msg;
   }
