@@ -19,12 +19,13 @@ export default class Player {
         row: null,
         col: null,
       }
-
+      
       if (action === 'place') {
         response.direction = 'horizontal';
         document.addEventListener('keydown', (e) => {
           if (e.key === 'r' || e.key === 'R') {
             response.direction = (response.direction === 'horizontal' ? 'vertical' : 'horizontal');
+            Display.currentDirection = response.direction;
           }
         })
       }
@@ -40,13 +41,19 @@ export default class Player {
   async placeFleet() {
     for (const shipName of Object.keys(this.board.fleet)) {
       let result;
+      Display.highlightPlacement(this.board.getShip(shipName), 'horizontal');
+
       do {
         const response = await this.selectTileTo('place');
         const { row, col, direction } = response;
         result = this.board.place(row, col, shipName, direction);
       } while (!result.success)
+
       Display.renderMessage(result.message);
+      Display.renderShips(this.board.grid);
     }
+    
+    Display.unhighlightPlacement(); 
   }
 
   /**

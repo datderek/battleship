@@ -1,7 +1,11 @@
+import Utils from './Utils.js';
+
 export default class Display {
   static usersGrid = document.querySelector('#users-grid');
   static opponentsGrid = document.querySelector('#opponents-grid');
   static roundMessage = document.querySelector('#round-message');
+  static currentShip = null;
+  static currentDirection = 'horizontal';
 
   /**
    * Renders two 10x10 grids for the game
@@ -34,6 +38,7 @@ export default class Display {
   static renderMessage(msg) {
     this.roundMessage.textContent = msg;
   }
+
   /**
    * Updates the visual state of the tile depending on whether the shot was a hit
    * or a miss
@@ -56,5 +61,40 @@ export default class Display {
         opponentTile.classList.add('miss');
       }
     }
+  }
+
+  static addHighlight(e) {
+    const row = Number(e.target.dataset.row);
+    const col = Number(e.target.dataset.col);
+    
+    if (Utils.isValidTile(row, col) && Utils.isValidLocation(row, col, Display.currentShip, Display.currentDirection)) {
+      for (let i = 0; i < Display.currentShip.length; i++) {
+        let tile;
+        if (Display.currentDirection === 'vertical') {
+          tile = Display.usersGrid.querySelector(`[data-row="${row + i}"][data-col="${col}"]`);
+        } else {
+          tile = Display.usersGrid.querySelector(`[data-row="${row}"][data-col="${col + i}"]`);
+        }
+  
+        tile.classList.add('highlight');
+      }
+    }
+  }
+
+  static removeHighlight() {
+    const highlightedTiles = Display.usersGrid.querySelectorAll('.highlight');
+    highlightedTiles.forEach(tile => tile.classList.remove('highlight'));
+  }
+
+  static highlightPlacement(ship, direction) {
+    this.currentShip = ship;
+    this.currentDirection = direction;
+    this.usersGrid.addEventListener('mouseover', this.addHighlight);
+    this.usersGrid.addEventListener('mouseout', this.removeHighlight);
+  }
+
+  static unhighlightPlacement() {
+    this.usersGrid.removeEventListener('mouseover', this.addHighlight);
+    this.usersGrid.removeEventListener('mouseout', this.removeHighlight);
   }
 }
