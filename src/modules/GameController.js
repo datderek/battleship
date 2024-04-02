@@ -26,6 +26,7 @@ export default class GameController {
   }
 
   #getNextMove() {
+    Display.renderMessage('Choose a tile to attack!');
     this.currentPlayer.selectTileTo('attack')
       .then((response) => this.playTurn(response.row, response.col));
   }
@@ -68,7 +69,7 @@ export default class GameController {
 
     if (result.success) {
       Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
-      Display.renderMessage(`Firing a shot at ${Utils.formatCoordinates(row, col)}, it was a... ${result.message}`);
+      Display.renderMessage(`${this.currentPlayer.name} fired a shot at ${Utils.formatCoordinates(row, col)}, it was a... ${result.message}`);
       
       if (result.message === 'Miss!') {
         this.#switchPlayer();
@@ -82,7 +83,7 @@ export default class GameController {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
-    await Utils.delay(1000);
+    await Utils.delay(1500);
     this.#getNextMove();
   }
 }

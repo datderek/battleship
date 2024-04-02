@@ -48,7 +48,7 @@ export default class Player {
     for (const ship of Player.ships) {
       let result;
       Display.enableHighlight(this.board.getShip(ship), 'horizontal');
-      Display.renderMessage(`Please choose a location for your ${Utils.capitalize(ship)}`);
+      Display.renderMessage(`Please choose a location for your ${Utils.capitalize(ship)}. Press 'r' to rotate.`);
 
       do {
         const response = await this.selectTileTo('place');
