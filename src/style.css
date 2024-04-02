@@ -15,19 +15,51 @@ body {
   align-items: center;
 }
 
+#title, #round-message {
+  text-align: center;
+}
+
+#game {
+  height: clamp(500px, 100%, 600px);
+  width: min(1000px, 100%);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: lightseagreen;
+}
+
+#header {
+  flex: 1 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: lightcyan;
+}
+
+#title {
+  font-size: 3rem;
+}
+
+#round-message{
+  font-size: 1.25rem;
+}
+
 #grid-container {
-  width: 1000px;
-  height: 600px;
-  background-color: wheat;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  background-color: wheat;
 }
 
 .grid {
-  height: 400px;
-  width: 400px;
+  flex: 0 1 400px;
+  aspect-ratio: 1 / 1;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -49,4 +81,23 @@ body {
 
 .hit {
   background-color: salmon;
+}
+
+@media only screen and (max-width: 600px) {
+  #game {
+    height: 100%;
+  }
+
+  #header {
+    flex: 0;
+  }
+
+  #grid-container {
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .grid {
+    flex: 1;
+  }
 }
