@@ -48,12 +48,16 @@ export default class Player {
     for (const ship of Player.ships) {
       let result;
       Display.enableHighlight(this.board.getShip(ship), 'horizontal');
+      Display.renderMessage(`Please choose a location for your ${Utils.capitalize(ship)}`);
 
       do {
-        Display.renderMessage(`Please choose a location for your ${Utils.capitalize(ship)}`);
         const response = await this.selectTileTo('place');
         const { row, col, direction } = response;
         result = this.board.place(row, col, ship, direction);
+
+        if (!result.success) {
+          Display.renderMessage(result.message);
+        }
       } while (!result.success)
 
       Display.renderShips(this.board.grid);

@@ -52,4 +52,13 @@ export default class Utils {
   static capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  /**
+   * Delays execution
+   * 
+   * @param {number} ms 
+   */
+  static delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }

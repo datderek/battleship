@@ -29,7 +29,7 @@ test('place returns message if ship does not fit', () => {
 
 test('place returns message if a ship is already present vertically', () => {
   board.place(1, 2, 'patrol', 'vertical');
-  expect(board.place(2, 2, 'battleship', 'vertical')).toEqual({ success: false, message: 'There is already a ship at that location.' });
+  expect(board.place(2, 2, 'battleship', 'vertical')).toEqual({ success: false, message: 'Placement is too close to another ship.' });
 });
 
 test('receiveAttack updates the board', () => {

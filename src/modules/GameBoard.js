@@ -56,10 +56,6 @@ export default class GameBoard {
     return true;
   }
 
-  #formatCoordinates(row, col) {
-    return `${String.fromCharCode(row + 65)}${col + 1}`;
-  }
-
   /**
    * Places the start of the ship at the provided tile (row, col).
    * 
@@ -80,7 +76,7 @@ export default class GameBoard {
     if (!Utils.isValidLocation(row, col, ship, direction)) {
       response.message = 'Ship does not fit at that location.';
     } else if (!this.#isUnobstructed(row, col, ship, direction)) {
-      response.message = 'There is already a ship at that location.';
+      response.message = 'Placement is too close to another ship.';
     } else {
       for (let i = 0; i < ship.length; i++) {
         if (direction === 'vertical') {
@@ -91,7 +87,7 @@ export default class GameBoard {
       }
 
       response.success = true;
-      response.message = `Placed ${Utils.capitalize(shipName)} at ${this.#formatCoordinates(row, col)}.`;
+      response.message = `Placed ${Utils.capitalize(shipName)} at ${Utils.formatCoordinates(row, col)}.`;
     }
 
     return response;

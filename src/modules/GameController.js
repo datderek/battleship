@@ -49,10 +49,6 @@ export default class GameController {
     this.opponent = temp;
   }
 
-  #delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   /**
    * Plays the turn with the provided move (row, col)
    * 
@@ -72,6 +68,8 @@ export default class GameController {
 
     if (result.success) {
       Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
+      Display.renderMessage(`Firing a shot at ${Utils.formatCoordinates(row, col)}, it was a... ${result.message}`);
+      
       if (result.message === 'Miss!') {
         this.#switchPlayer();
       } else { 
@@ -84,8 +82,7 @@ export default class GameController {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
-    Display.renderMessage(`Firing a shot at ${Utils.formatCoordinates(row, col)}... it was a ${result.message}`);
-    await this.#delay(1000);
+    await Utils.delay(1000);
     this.#getNextMove();
   }
 }
