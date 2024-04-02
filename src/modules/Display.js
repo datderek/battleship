@@ -24,6 +24,11 @@ export default class Display {
     });
   }
 
+  /**
+   * Reveals all ships on the board
+   * 
+   * @param {GameBoard} board 
+   */
   static renderShips(board) {
     for (let row = 0; row <= 9; row++) {
       for (let col = 0; col <= 9; col++) {
@@ -35,11 +40,19 @@ export default class Display {
     }
   }
 
+  /**
+   * Hides all ships on the board
+   */
   static hideShips() {
     const tiles = this.usersGrid.querySelectorAll('.ship');
     tiles.forEach(tile => tile.classList.remove('ship'));
   }
 
+  /**
+   * Displays the round message
+   * 
+   * @param {string} msg 
+   */
   static renderMessage(msg) {
     this.roundMessage.textContent = msg;
   }
@@ -68,7 +81,7 @@ export default class Display {
     }
   }
 
-  static addHighlight(e) {
+  static #addHighlight(e) {
     const row = Number(e.target.dataset.row);
     const col = Number(e.target.dataset.col);
     
@@ -86,20 +99,29 @@ export default class Display {
     }
   }
 
-  static removeHighlight() {
+  static #removeHighlight() {
     const highlightedTiles = Display.usersGrid.querySelectorAll('.highlight');
     highlightedTiles.forEach(tile => tile.classList.remove('highlight'));
   }
 
-  static highlightPlacement(ship, direction) {
+  /**
+   * Enables highlighting of tiles to indicate ship placement
+   * 
+   * @param {Ship} ship 
+   * @param {string} direction 
+   */
+  static enableHighlight(ship, direction) {
     this.currentShip = ship;
     this.currentDirection = direction;
-    this.usersGrid.addEventListener('mouseover', this.addHighlight);
-    this.usersGrid.addEventListener('mouseout', this.removeHighlight);
+    this.usersGrid.addEventListener('mouseover', this.#addHighlight);
+    this.usersGrid.addEventListener('mouseout', this.#removeHighlight);
   }
 
-  static unhighlightPlacement() {
-    this.usersGrid.removeEventListener('mouseover', this.addHighlight);
-    this.usersGrid.removeEventListener('mouseout', this.removeHighlight);
+  /**
+   * Disables hightlighting of tiles
+   */
+  static disableHighlight() {
+    this.usersGrid.removeEventListener('mouseover', this.#addHighlight);
+    this.usersGrid.removeEventListener('mouseout', this.#removeHighlight);
   }
 }

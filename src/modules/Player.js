@@ -38,10 +38,13 @@ export default class Player {
     })
   }
 
+  /**
+   * Prompts the player to place their ships
+   */
   async placeFleet() {
     for (const shipName of Object.keys(this.board.fleet)) {
       let result;
-      Display.highlightPlacement(this.board.getShip(shipName), 'horizontal');
+      Display.enableHighlight(this.board.getShip(shipName), 'horizontal');
 
       do {
         const response = await this.selectTileTo('place');
@@ -53,7 +56,7 @@ export default class Player {
       Display.renderShips(this.board.grid);
     }
     
-    Display.unhighlightPlacement(); 
+    Display.disableHighlight(); 
   }
 
   /**
