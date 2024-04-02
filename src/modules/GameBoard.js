@@ -73,7 +73,9 @@ export default class GameBoard {
     
     const ship = this.getShip(shipName);
 
-    if (!Utils.isValidLocation(row, col, ship, direction)) {
+    if (!Utils.isValidTile(row, col)) {
+      response.message = 'Invalid tile. Please choose another tile.';
+    } else if (!Utils.isValidLocation(row, col, ship, direction)) {
       response.message = 'Ship does not fit at that location.';
     } else if (!this.#isUnobstructed(row, col, ship, direction)) {
       response.message = 'Placement is too close to another ship.';
