@@ -56,7 +56,6 @@ export default class Player {
         result = this.board.place(row, col, ship, direction);
       } while (!result.success)
 
-      Display.renderMessage(result.message);
       Display.renderShips(this.board.grid);
     }
     

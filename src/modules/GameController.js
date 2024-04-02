@@ -84,6 +84,7 @@ export default class GameController {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
+    Display.renderMessage(`Firing a shot at ${Utils.formatCoordinates(row, col)}... it was a ${result.message}`);
     await this.#delay(1000);
     this.#getNextMove();
   }
