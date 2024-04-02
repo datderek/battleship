@@ -12,12 +12,20 @@ export default class Display {
    */
   static renderGrid() {
     [this.usersGrid, this.opponentsGrid].forEach((grid) => {
-      for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
+      for (let i = -1; i < 10; i++) {
+        for (let j = -1; j < 10; j++) {
           const div = document.createElement('div');
-          div.classList.add('tile');
-          div.dataset.row = i;
-          div.dataset.col = j;
+          if (i === -1 && j >= 0) {
+            div.classList.add('label');
+            div.textContent = j + 1;
+          } else if (i >= 0 && j === -1) {
+            div.classList.add('label');
+            div.textContent = String.fromCharCode(i + 65);
+          } else if (i > -1 && j > -1) {
+            div.classList.add('tile');
+            div.dataset.row = i;
+            div.dataset.col = j;
+          }
           grid.appendChild(div);
         }
       }
