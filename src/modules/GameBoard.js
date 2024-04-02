@@ -91,7 +91,7 @@ export default class GameBoard {
       }
 
       response.success = true;
-      response.message = `Placed ${shipName.charAt(0).toUpperCase() + shipName.slice(1)} at ${this.#formatCoordinates(row, col)}.`;
+      response.message = `Placed ${Utils.capitalize(shipName)} at ${this.#formatCoordinates(row, col)}.`;
     }
 
     return response;

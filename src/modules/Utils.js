@@ -42,4 +42,14 @@ export default class Utils {
   static formatCoordinates(row, col) {
     return `${String.fromCharCode(row + 65)}${col + 1}`;
   }
+
+  /**
+   * Capitalizes the string
+   * 
+   * @param {string} string 
+   * @returns capitalized string
+   */
+  static capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 }

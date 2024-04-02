@@ -1,7 +1,10 @@
 import GameBoard from "./GameBoard.js";
 import Display from "./Display.js";
+import Utils from "./Utils.js";
 
 export default class Player {
+  static ships = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrol'];
+
   constructor(name) {
     this.name = name;
     this.board = new GameBoard();
@@ -42,14 +45,15 @@ export default class Player {
    * Prompts the player to place their ships
    */
   async placeFleet() {
-    for (const shipName of Object.keys(this.board.fleet)) {
+    for (const ship of Player.ships) {
       let result;
-      Display.enableHighlight(this.board.getShip(shipName), 'horizontal');
+      Display.enableHighlight(this.board.getShip(ship), 'horizontal');
 
       do {
+        Display.renderMessage(`Please choose a location for your ${Utils.capitalize(ship)}`);
         const response = await this.selectTileTo('place');
         const { row, col, direction } = response;
-        result = this.board.place(row, col, shipName, direction);
+        result = this.board.place(row, col, ship, direction);
       } while (!result.success)
 
       Display.renderMessage(result.message);
@@ -63,15 +67,14 @@ export default class Player {
    * Randomly places ships on the board
    */
   placeRandom() {
-    Object.keys(this.board.fleet).forEach((shipName) => {
+    for (const ship of Player.ships) {
       let result;
       do {
         const row = Math.floor(Math.random() * 10);
         const col = Math.floor(Math.random() * 10);
         const direction = (Math.round(Math.random()) === 0 ? 'vertical' : 'horizontal');
-        result = this.board.place(row, col, shipName, direction);
+        result = this.board.place(row, col, ship, direction);
       } while (!result.success)
-    })
+    }
   }
-
 }
