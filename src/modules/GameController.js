@@ -59,12 +59,6 @@ export default class GameController {
    *                        move was invalid, otherwise advances to the next turn
    */
   async playTurn(row, col) {
-    if (!Utils.isValidTile(row, col)) {
-      Display.renderMessage('Invalid move. Please choose another tile.');
-      this.#getNextMove();
-      return;
-    }
-
     const result = this.opponent.board.receiveAttack(row, col);
     if (this.currentPlayer.name === 'Bot') this.currentPlayer.receiveFeedback(row, col, result);
 

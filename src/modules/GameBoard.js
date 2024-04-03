@@ -74,7 +74,7 @@ export default class GameBoard {
     const ship = this.getShip(shipName);
 
     if (!Utils.isValidTile(row, col)) {
-      response.message = 'Invalid tile. Please choose another tile.';
+      response.message = 'Invalid tile.';
     } else if (!Utils.isValidLocation(row, col, ship, direction)) {
       response.message = 'Ship does not fit at that location.';
     } else if (!this.#isUnobstructed(row, col, ship, direction)) {
@@ -108,11 +108,14 @@ export default class GameBoard {
       message: ''
     }
 
+    if (!Utils.isValidTile(row, col)) {
+      response.message = 'Invalid tile.';
+      return response;
+    }
+    
     const tile = this.grid[row][col];
 
-    if (!Utils.isValidTile(row, col)) {
-      response.message = 'Coordinates are out of bound.';
-    } else if (tile.isShot) {
+    if (tile.isShot) {
       response.message = 'You have already shot this tile.';
     } else {
       tile.isShot = true;
