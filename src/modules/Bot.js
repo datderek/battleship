@@ -4,7 +4,9 @@ export default class Bot extends Player {
   constructor() {
     super("Bot");
     this.mode = 'searching';
-    this.targetQueue = [];
+    this.attackQueue = [];
+    this.shipEndpoints = [];
+    this.shipOrientation = null;
   }
 
   #generateRandomDirection() {
@@ -20,13 +22,13 @@ export default class Bot extends Player {
   #generateCoordinates() {
     if (this.mode === 'searching') {
       return this.#generateRandomCoordinates();
-    } else if (this.mode ==='found') {
-      return this.targetQueue.pop();
+    } else if (this.mode === 'found' || this.mode === 'target') {
+      return this.attackQueue.pop();
     }
   }
 
   #addAdjacentTiles(row, col) {
-    this.targetQueue.push([row + 1, col], [row, col + 1], [row - 1, col], [row, col - 1]);
+    this.attackQueue.push([row + 1, col], [row, col + 1], [row - 1, col], [row, col - 1]);
   }
 
   /**
@@ -36,21 +38,75 @@ export default class Bot extends Player {
    * @param {*} result 
    */
   receiveFeedback(row, col, result) {
-    if (result.message === 'Hit!' && this.mode === 'searching') {
+    if (this.mode === 'searching' && result.message === 'Hit!') {
       this.#addAdjacentTiles(row, col);
       this.mode = 'found';
-    } else if (this.mode === 'found') {
+      this.shipEndpoints.push([row, col]);
+    } else if (this.mode === 'found' && result.message === 'Hit!') {
+      this.attackQueue = [];
+      this.mode = 'target';
+      const prevRow = this.shipEndpoints[0][0];
+      const prevCol = this.shipEndpoints[0][1];
+
+      if (row != prevRow) {
+        this.shipOrientation = 'vertical';
+
+        if (row > prevRow) {
+          this.shipEndpoints.push([row, col]);
+        } else {
+          this.shipEndpoints.unshift([row, col]);
+        }
+
+        const startRow = this.shipEndpoints[0][0];
+        const endRow = this.shipEndpoints[1][0];
+        this.attackQueue.push([startRow - 1, col], [endRow + 1, col]);
+      } else {
+        this.shipOrientation = 'horizontal';
+
+        if (col > prevCol) {
+          this.shipEndpoints.push([row, col]);
+        } else {
+          this.shipEndpoints.unshift([row, col]);
+        }
+
+        const startCol = this.shipEndpoints[0][1];
+        const endCol = this.shipEndpoints[1][1];
+        this.attackQueue.push([row, startCol - 1], [row, endCol + 1]);
+      }
+    } else if (this.mode === 'target') {
       if (result.message === 'Hit!') {
-        this.#addAdjacentTiles(row, col);
+        if (this.shipOrientation === 'vertical') {
+          const startRow = this.shipEndpoints[0][0];
+
+          // Updates the endpoints
+          if (row > startRow) { // down
+            this.shipEndpoints[1] = [row, col];
+            this.attackQueue.push([row + 1, col]);
+          } else { // up
+            this.shipEndpoints[0] = [row, col];
+            this.attackQueue.push([row - 1 , col]);
+          }
+        } else {
+          const endCol = this.shipEndpoints[1][1];
+
+          if (col > endCol) { // right
+            this.shipEndpoints[1] = [row, col];
+            this.attackQueue.push([row, col + 1]);
+          } else { // left
+            this.shipEndpoints[0] = [row, col];
+            this.attackQueue.push([row, col - 1]);
+          }
+        }
       }
 
-      // If there are no tiles to target, switch back to searching mode
-      if (this.targetQueue.length === 0) {
-        this.mode = 'searching';
+      if (this.attackQueue.length === 0) {
+        this.mode = 'searching'
+        this.shipEndpoints = [];
+        this.shipOrientation = null;
       }
     }
   }
-  
+
   /**
    * Selects a tile
    * 
