@@ -66,6 +66,7 @@ export default class GameController {
     }
 
     const result = this.opponent.board.receiveAttack(row, col);
+    if (this.currentPlayer.name === 'Bot') this.currentPlayer.receiveFeedback(row, col, result);
 
     if (result.success) {
       Display.updateTile(this.playerOne.board.grid[row][col], this.playerTwo.board.grid[row][col], row, col);
@@ -83,7 +84,7 @@ export default class GameController {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
-    await Utils.delay(1500);
+    await Utils.delay((this.currentPlayer.name === 'Bot' ? 250 : 1500));
     this.#getNextMove();
   }
 }
