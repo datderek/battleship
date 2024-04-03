@@ -1,6 +1,7 @@
 import GameBoard from "./GameBoard.js";
 import Display from "./Display.js";
 import Utils from "./Utils.js";
+import AudioPlayer from "./AudioPlayer.js";
 
 export default class Player {
   static ships = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrol'];
@@ -61,6 +62,7 @@ export default class Player {
       } while (!result.success)
 
       Display.renderShips(this.board.grid);
+      AudioPlayer.play('plop');
     }
     
     Display.disableHighlight(); 

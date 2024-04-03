@@ -2,6 +2,7 @@ import Player from './Player.js'
 import Bot from './Bot.js';
 import Display from './Display.js';
 import Utils from './Utils.js';
+import AudioPlayer from './AudioPlayer.js';
 
 export default class GameController {
   constructor() {
@@ -68,17 +69,19 @@ export default class GameController {
       
       if (result.message === 'Miss!') {
         this.#switchPlayer();
+        AudioPlayer.play('miss');
       } else { 
         if (this.#isGameOver()) {
           this.#endGame();
           return;
         }
+        AudioPlayer.play('hit');
       }
     } else {
       Display.renderMessage(`${result.message} Please choose another tile.`);
     }
 
-    await Utils.delay((this.currentPlayer.name === 'Bot' ? 250 : 1500));
+    await Utils.delay(1000);
     this.#getNextMove();
   }
 }
