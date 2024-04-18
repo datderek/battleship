@@ -1,6 +1,6 @@
 # Battleships
 
-A single player recreation of the classic Battleship game!
+A single player recreation of the classic Battleship game! [Live Demo](https://datderek.github.io/battleship/)
 
 ## Goal:
 The purpose of this project was to practice the Test Driven Development paradigm in order to develop code that is well-structured, maintainable, and testable by design (obviously)
